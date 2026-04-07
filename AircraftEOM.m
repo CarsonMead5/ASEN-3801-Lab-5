@@ -1,55 +1,70 @@
-function xdot = AircraftEOM_test1(time, aircraft_state, aircraft_surfaces, wind_inertial, aircraft_parameters)
+function aircraft_state_derivative = AircraftEOM(t, aircraft_state, aircraft_surfaces, wind_inertial, aircraft_parameters)
+% AIRCRAFT EOM CV 
+% @brief Computes the state derivative of an Aircraft given the current state and control inputs
+% @param t Time (not used in this function but required for ODE solvers)
+% @param aircraft_state 12x1 vector of the current state [x; y; z; phi; theta; psi; u; v; w; p; q; r]
+% @param  ACc Struct containing FWAC constants (gravity, mass, inertia, control moment coef, etc.)
+% @param control_input_array 4x1 vector of control inputs [D_Elevator; D_Aileron; D_Rudder; D_Throttle] (should not be included)
+% @param Engine_Force 4x1 vector of motor forces (thrusts) [f1; f2; f3; f4]
+% @return aircraft_state_derivative 12x1 vector of the state derivatives
+    %% Preallocations
+    aircraft_state_derivative = zeros(12,1);
 
-phi = aircraft_state(4,1);
-theta = aircraft_state(5,1);
-psi = aircraft_state(6,1);
-u = aircraft_state(7,1);
-v = aircraft_state(8,1);
-w = aircraft_state(9,1);
-p = aircraft_state(10,1);
-q = aircraft_state(11,1);
-r = aircraft_state(12,1);
+    %% Parse out input args
+    pos = aircraft_state(1:3);
+    phi = aircraft_state(4);
+    theta = aircraft_state(5);
+    psi = aircraft_state(6);
+    vel = aircraft_state(7:9);
+    ang_rates = aircraft_state(10:12);
+    
+    [~, ~, ~, density] = atmosisa(pos(3));
 
-c_phi = cos(phi);
-c_theta = cos(theta);
-c_psi = cos(psi);
-s_phi = sin(phi);
-s_theta = sin(theta);
-s_psi = sin(psi);
+    [aero_forces, aero_moments] = AeroForcesAndMoments(aircraft_state, aircraft_surfaces, wind_inertial, density, aircraft_parameters);
 
-% calling AeroForcesAndMoments fxn to get forces and moments 
-[aero_forces, aero_moments] = AeroForcesAndMoments(aircraft_state, aircraft_surfaces, wind_inertial, density, aircraft_parameters);
+   
 
-% rotation matrix
- R = [
-    c_phi * c_psi, (s_phi * s_theta * c_psi) - (c_phi * s_psi), (c_phi * s_theta * c_psi) + (s_phi * s_psi);
-    c_phi * s_psi, (s_phi * s_theta * s_psi) + (c_phi * s_psi), (c_phi * s_theta * s_psi) - (s_phi * c_psi);
-    -s_theta, s_phi * c_theta, c_phi * c_theta;
-  ];
+    %% Position Dot Calculations
 
-% pdot for x_edot, y_edot, z_edot
-pdot = R * [u, v, w];
+    R1 = [ 1      0           0;
+       0  cos(phi)  sin(phi);
+       0 -sin(phi)  cos(phi) ];
 
-% odot for phidot, thetadot, psidot
-odot = [1, s_phi * tan(theta), c_phi * tan(theta);
-        0, c_phi , -s_phi;
-        0, s_phi * sec(theta), c_phi *sec(theta)] * [p, q, r];
+    R2 = [ cos(theta)  0  -sin(theta);
+           0       1       0;
+       sin(theta)  0   cos(theta) ];
 
-% vdot for u_edot, v_edot, w_edot
-vdot = [(r*v - q*w), (p*w - r*u), (q*u - p*v)] * aircraft_parameters.g*[-s_theta, c_theta*s_psi, c_theta*c_phi] * aircraft_parameters.m *aero_forces;
+    R3 = [ cos(psi)  sin(psi)  0;
+      -sin(psi)  cos(psi)  0;
+           0          0    1 ];
+    DCM = R3*R2*R1;
 
-% I matrix 
-I = [aircraft_parameters.Ix, 0 , 0;
-    0, aircraft_parameters.Iy, 0;
-    aircraft_parameters.Ixz, 0, aircraft_parameters.Iz];
+    % DCM = [cos(theta)*cos(psi), sin(phi)*sin(theta)*cos(psi)-cos(phi)*sin(psi), cos(phi)*sin(theta)*cos(psi)+sin(phi)*sin(psi);
+    % cos(theta)*sin(psi), sin(phi)*sin(theta)*sin(psi) + cos(phi)*cos(psi), cos(phi)*sin(theta)*sin(psi) - sin(phi)*cos(psi);
+    % -sin(theta), sin(phi)*cos(theta), cos(phi)*cos(theta)];
 
-% wdot for pdot, qdot, rdot
-w = [p,q,r];
-Iw_matrix = I*w;
+    aircraft_state_derivative(1:3) = DCM'*vel;
+    
+    %% Angle Dot Calculations
 
-wdot = inv(I) * (-cross(w,Iw_matrix) + aero_moments);
+    angDot = ([1, sin(phi)*tan(theta), cos(phi)*tan(theta);
+                    0, cos(phi), -sin(phi);
+                    0, sin(phi)*sec(theta), cos(phi)*sec(theta)])*ang_rates;
+    
+    aircraft_state_derivative(4:6) = angDot;
+    
+    %% Inertial Velocity Dot Calculation 
 
 
-xdot = [pdot, odot, vdot, wdot];
+    velDot = cross(-ang_rate,vel)+(aero_forces./aircraft_parameters.m);
+
+    aircraft_state_derivative(7:9) = velDot;
+
+    %% Angular Velocity Dot Calculation
+
+    omegaDot = (IB.^(-1)*(cross(-ang_rates,(IB*ang_rates))+aero_moments));
+
+    aircraft_state_derivative(10:12) = omegaDot;
+    
 
 end
