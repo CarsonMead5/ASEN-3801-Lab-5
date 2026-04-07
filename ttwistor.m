@@ -1,3 +1,4 @@
+function [aircraft_parameters] = ttwistor()
 % Flight conditions and atmospheric parameters derived from AVL and other 
 % sources for the University of Colorado's Ttwistor Unmanned Aircraft, an
 % twin-engine version of the Tempest UAS.
@@ -16,7 +17,7 @@
 % If using this data for published work please reference:
 %
 % Jason Roadman, Jack Elston, Brian Argrow, and Eric W. Frew. 
-%   "Mission Performance of the Tempest UAS in Supercell Storms".î 
+%   "Mission Performance of the Tempest UAS in Supercell Storms".‚Äù 
 %   AIAA Journal of Aircraft, 2012.
 %
 %
@@ -49,6 +50,9 @@ aircraft_parameters.Ix = SLUGFT2_TO_KGM2*4106/12^2/32.2; %[kg m^2]
 aircraft_parameters.Iy = SLUGFT2_TO_KGM2*3186/12^2/32.2; %[kg m^2]
 aircraft_parameters.Iz = SLUGFT2_TO_KGM2*7089/12^2/32.2; %[kg m^2]
 aircraft_parameters.Ixz = SLUGFT2_TO_KGM2*323.5/12^2/32.2; %[kg m^2]
+aircraft_parameters.IB = [ aircraft_parameters.Ix 0 aircraft_parameters.Ixz; 
+                           0 aircraft_parameters.Iy 0;
+                           aircraft_parameters.Ixz 0 aircraft_parameters.Iz ];
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,3 +143,4 @@ aircraft_parameters.CYr = 0.213412;
   aircraft_parameters.Cndr =  -0.000856;
 
   
+end
