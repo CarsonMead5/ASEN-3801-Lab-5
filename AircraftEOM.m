@@ -1,4 +1,4 @@
-function xdot = AircraftEOM_test1(time, aircraft_state, aircraft_surfaces, wind_inertial, aircraft_parameters)
+function xdot = AircraftEOM(time, aircraft_state, aircraft_surfaces, wind_inertial, aircraft_parameters)
 
 phi = aircraft_state(4,1);
 theta = aircraft_state(5,1);
