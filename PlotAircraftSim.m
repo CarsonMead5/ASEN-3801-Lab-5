@@ -24,6 +24,7 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
 % Establishing Optional Plotting Variables
 lwidth = 1.5; % Figure linewidth
 markSize = 50; % 3D plot marker size
+save_figures = 1; % Boolean to save figures or not
 
 %% Plotting Inertial Position vs. Time
 
@@ -142,22 +143,22 @@ end
 subplot(4,1,1);
 plot(time, control_input_array(1,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_e (Degrees)");
+ylabel("\delta_e (°)");
 adjustYlim(control_input_array(1,:),col);
 subplot(4,1,2);
 plot(time, control_input_array(2,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_a (Degrees)");
+ylabel("\delta_a (°)");
 adjustYlim(control_input_array(2,:),col);
 subplot(4,1,3);
 plot(time, control_input_array(3,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_r (Nm)");
+ylabel("\delta_r (°)");
 adjustYlim(control_input_array(3,:),col);
 subplot(4,1,4);
 h = plot(time, control_input_array(4,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_t (Nm)")
+ylabel("\delta_t (n.d.)")
 xlabel("time (s)");
 adjustYlim(control_input_array(4,:),col);
 addLegend(h,col,1);
