@@ -21,9 +21,7 @@ function aircraft_state_derivative = AircraftEOM(t, aircraft_state, aircraft_sur
     [~, ~, ~, density] = atmosisa(pos(3));
 
     [aero_forces, aero_moments] = AeroForcesAndMoments(aircraft_state, aircraft_surfaces, wind_inertial, density, aircraft_parameters);
-
    
-
     %% Position Dot Calculations
 
     R1 = [ 1      0           0;
@@ -55,14 +53,13 @@ function aircraft_state_derivative = AircraftEOM(t, aircraft_state, aircraft_sur
     
     %% Inertial Velocity Dot Calculation 
 
-
-    velDot = cross(-ang_rate,vel)+(aero_forces./aircraft_parameters.m);
+    velDot = cross(-ang_rates,vel)+(aero_forces./aircraft_parameters.m);
 
     aircraft_state_derivative(7:9) = velDot;
 
     %% Angular Velocity Dot Calculation
 
-    omegaDot = (IB.^(-1)*(cross(-ang_rates,(IB*ang_rates))+aero_moments));
+    omegaDot = (aircraft_parameters.IB^(-1)*(cross(-ang_rates,(aircraft_parameters.IB*ang_rates))+aero_moments));
 
     aircraft_state_derivative(10:12) = omegaDot;
     

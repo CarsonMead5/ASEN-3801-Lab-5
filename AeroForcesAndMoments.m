@@ -16,7 +16,7 @@ function [aero_forces, aero_moments] = AeroForcesAndMoments(aircraft_state, airc
 %%% redefine states and inputs for ease of use
 ap = aircraft_parameters;
 
-REB = angle2dcm(aicraft_state(6),aicraft_state(5),aicraft_state(4),'ZYX');
+REB = angle2dcm(aircraft_state(6),aircraft_state(5),aircraft_state(4),'ZYX');
 wind_body = REB'*wind_inertial;
 % wind_body = TransformFromInertialToBody(wind_inertial, aircraft_state(4:6,1));
 air_rel_vel_body = aircraft_state(7:9,1) - wind_body;

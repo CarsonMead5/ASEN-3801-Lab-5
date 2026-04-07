@@ -8,7 +8,7 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
 %   aircraft_state_array - 12*n state vector of positions, attitude,
 %       velocities, and angular velocities
 %   control_input_array - 4*n array of control inputs for each time
-%   fig - 6*1 bector of figure numbers to plot over
+%   fig - 6*1 vector of figure numbers to plot over
 %   col - indicates the line color plotting option for specified run
 %       col{1} - color and line style
 %       col{2} - title add-on
@@ -50,7 +50,7 @@ ylabel("z_E (m)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(3,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(1) + "_Inertial Position vs Time","-r300","-dpng")
+exportgraphics(gcf,"./Figures/Fig " + fig(3) + "_Inertial Position vs Time.pdf");
 
 %% Plotting Euler Angles vs. Time
 
@@ -77,8 +77,7 @@ ylabel("\psi (rad)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(6,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(2) + "_Euler Angles vs Time","-r300","-dpng")
-
+exportgraphics(gcf,"./Figures/Fig " + fig(3) + "_Euler Angles vs Time.pdf");
 %% Plotting Body Frame Velocity vs. Time
 
 figure(fig(3));
@@ -104,7 +103,7 @@ ylabel("w^E (m/s)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(10,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(3) + "_Body Velocity vs Time","-r300","-dpng")
+exportgraphics(gcf,"./Figures/Fig " + fig(3) + "_Body Velocity vs Time.pdf");
 
 %% Plotting Angular Velocity vs. Time
 
@@ -131,8 +130,7 @@ ylabel("r (rad/s)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(12,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(4) + "_Angular Velocity vs Time","-r300","-dpng")
-
+exportgraphics(gcf,"./Figures/Fig " + fig(3) + "_Angular Velocity vs Time.pdf");
 %% Plotting Control Inputs vs. Time
 
 figure(fig(5));
@@ -163,8 +161,7 @@ ylabel("\delta_t (Nm)")
 xlabel("time (s)");
 adjustYlim(control_input_array(4,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(5) + "_Control Surface Inputs vs Time","-r300","-dpng")
-
+exportgraphics(gcf,"./Figures/Fig " + fig(3) + "_Control Surface Inputs vs Time.pdf");
 %% Plotting 3D Path
 
 figure(fig(6));
@@ -187,8 +184,7 @@ adjustXlim(aircraft_state_array(1,:));
 adjustYlim(aircraft_state_array(2,:),col);
 adjustZlim(aircraft_state_array(3,:));
 view(30,30);
-print("./Figures/Fig " + fig(6) + "_Quadrotor 3D Path","-r300","-dpng")
-
+exportgraphics(gcf,"./Figures/Fig " + fig(3) + "_Quadrotor 3D Path.pdf");
 function adjustXlim(var)
     curLim = xlim;
     newMin = min(var);
