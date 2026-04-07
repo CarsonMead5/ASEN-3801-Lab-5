@@ -15,9 +15,9 @@ options = odeset('RelTol',1e-6);
 [tout, xout] = ode45(@(t,x) AircraftEOM(t,x,u0,wE,aircraft_parameters), [0 10], x0 ,options); % Run ODE45
 uout = repmat(u0,1,length(tout));
 
-fig = 1:6;
+fig = 211:216;
 col = {"b-","","2.1",1};
-PlotAircraftSim(tout, xout', u0, fig, col);
+PlotAircraftSim(tout, xout', uout, fig, col);
 
 %% 2.2
 clear; clc; close all;
@@ -34,10 +34,11 @@ wE = [0; 0; 0];
 
 options = odeset('RelTol',1e-6);
 [tout, xout] = ode45(@(t,x) AircraftEOM(t,x,u0,wE,aircraft_parameters), [0 10], x0 ,options); % Run ODE45
+uout = repmat(u0,1,length(tout));
 
-fig = 1:6;
+fig = 221:226;
 col = {"b-","","2.2",1};
-PlotAircraftSim(tout, xout', u0, fig, col);
+PlotAircraftSim(tout, xout', uout, fig, col);
 
 %% 2.3
 clear; clc; close all;
@@ -54,7 +55,8 @@ wE = [0; 0; 0];
 
 options = odeset('RelTol',1e-6);
 [tout, xout] = ode45(@(t,x) AircraftEOM(t,x,u0,wE,aircraft_parameters), [0 10], x0 ,options); % Run ODE45
+uout = repmat(u0,1,length(tout));
 
-fig = 1:6;
+fig = 231:236;
 col = {"b-","","2.3",1};
-PlotAircraftSim(tout, xout', u0, fig, col);
+PlotAircraftSim(tout, xout', uout, fig, col);
