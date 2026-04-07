@@ -7,7 +7,8 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
 %   time - vector of time corrresponding to nth set of variables
 %   aircraft_state_array - 12*n state vector of positions, attitude,
 %       velocities, and angular velocities
-%   control_input_array - 4*n array of control inputs for each time
+%   control_input_array - 4*n array of control surface inputs for each time
+%       *** Make sure input is in degrees ***
 %   fig - 6*1 bector of figure numbers to plot over
 %   col - indicates the line color plotting option for specified run
 %       col{1} - color and line style
@@ -24,6 +25,7 @@ function PlotAircraftSim(time, aircraft_state_array, control_input_array, fig, c
 % Establishing Optional Plotting Variables
 lwidth = 1.5; % Figure linewidth
 markSize = 50; % 3D plot marker size
+save_figures = 1; % Boolean to save figures or not
 
 %% Plotting Inertial Position vs. Time
 
@@ -50,8 +52,9 @@ ylabel("z_E (m)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(3,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(1) + "_Inertial Position vs Time","-r300","-dpng")
-
+if save_figures == 1
+    print("./Figures/Fig " + fig(1) + "_Inertial Position vs Time","-r300","-dpng")
+end
 %% Plotting Euler Angles vs. Time
 
 figure(fig(2));
@@ -77,7 +80,9 @@ ylabel("\psi (rad)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(6,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(2) + "_Euler Angles vs Time","-r300","-dpng")
+if save_figures == 1
+    print("./Figures/Fig " + fig(2) + "_Euler Angles vs Time","-r300","-dpng")
+end
 
 %% Plotting Body Frame Velocity vs. Time
 
@@ -104,7 +109,9 @@ ylabel("w^E (m/s)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(10,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(3) + "_Body Velocity vs Time","-r300","-dpng")
+if save_figures == 1
+    print("./Figures/Fig " + fig(3) + "_Body Velocity vs Time","-r300","-dpng")
+end
 
 %% Plotting Angular Velocity vs. Time
 
@@ -131,7 +138,9 @@ ylabel("r (rad/s)");
 xlabel("time (s)");
 adjustYlim(aircraft_state_array(12,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(4) + "_Angular Velocity vs Time","-r300","-dpng")
+if save_figures == 1
+    print("./Figures/Fig " + fig(4) + "_Angular Velocity vs Time","-r300","-dpng")
+end
 
 %% Plotting Control Inputs vs. Time
 
@@ -144,26 +153,28 @@ end
 subplot(4,1,1);
 plot(time, control_input_array(1,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_e (Degrees)");
+ylabel("\delta_e (°)");
 adjustYlim(control_input_array(1,:),col);
 subplot(4,1,2);
 plot(time, control_input_array(2,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_a (Degrees)");
+ylabel("\delta_a (°)");
 adjustYlim(control_input_array(2,:),col);
 subplot(4,1,3);
 plot(time, control_input_array(3,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_r (Nm)");
+ylabel("\delta_r (°)");
 adjustYlim(control_input_array(3,:),col);
 subplot(4,1,4);
 h = plot(time, control_input_array(4,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\delta_t (Nm)")
+ylabel("\delta_t (n.d.)")
 xlabel("time (s)");
 adjustYlim(control_input_array(4,:),col);
 addLegend(h,col,1);
-print("./Figures/Fig " + fig(5) + "_Control Surface Inputs vs Time","-r300","-dpng")
+if save_figures == 1
+    print("./Figures/Fig " + fig(5) + "_Control Surface Inputs vs Time","-r300","-dpng")
+end
 
 %% Plotting 3D Path
 
@@ -187,7 +198,9 @@ adjustXlim(aircraft_state_array(1,:));
 adjustYlim(aircraft_state_array(2,:),col);
 adjustZlim(aircraft_state_array(3,:));
 view(30,30);
-print("./Figures/Fig " + fig(6) + "_Quadrotor 3D Path","-r300","-dpng")
+if save_figures == 1
+    print("./Figures/Fig " + fig(6) + "_Quadrotor 3D Path","-r300","-dpng")
+end
 
 function adjustXlim(var)
     curLim = xlim;
