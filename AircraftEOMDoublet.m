@@ -43,6 +43,5 @@ function [xdot] = AircraftEOMDoublet(time, aircraft_state, aircraft_surfaces, do
 
     omegaBdot = aircraft_parameters.IB^-1*(aero_moments - cross(omegaB,aircraft_parameters.IB*omegaB));
 
-    vardot = [pEdot; odot; vBdot; omegaBdot];
-
+    xdot = [pEdot; odot; vBdot; omegaBdot];
 end
