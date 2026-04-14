@@ -44,4 +44,8 @@ function [xdot] = AircraftEOMDoublet(time, aircraft_state, aircraft_surfaces, do
     omegaBdot = aircraft_parameters.IB^-1*(aero_moments - cross(omegaB,aircraft_parameters.IB*omegaB));
 
     xdot = [pEdot; odot; vBdot; omegaBdot];
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 end

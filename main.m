@@ -116,3 +116,7 @@ uout(1,afterD) = uout(1,afterD)-doublet_size;
 fig = 321:326;
 col = {"b-","","3.2",1};
 PlotAircraftSim(tout, xout', uout, fig, col);
+
+%% Part 3.1
+
+
