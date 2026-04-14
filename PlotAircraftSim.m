@@ -30,21 +30,22 @@ save_figures = 1; % Boolean to save figures or not
 
 figure(fig(1));
 t1 = findobj(gcf, 'Type', 'tiledlayout');
+
 if isempty(t1)
     t1 = tiledlayout(3,1,'TileSpacing','compact');
     xlabel(t1, "time (s)");
-    if (length(col) > 1) 
-        sgtitle(col{2} + "Inertial Position vs. Time","FontSize",12);
-    else 
-        sgtitle("Inertial Position vs. Time","FontSize",10);
-    end
 end
-
 nexttile(t1, 1);
+
 plot(time, aircraft_state_array(1,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
 ylabel("x_E (m)");
 adjustYlim(aircraft_state_array(1,:),col);
+if (length(col) > 1) 
+        title(col{2} + "Inertial Position vs. Time");
+    else
+        title("Inertial Position vs. Time");
+end
 
 nexttile(t1, 2);
 plot(time, aircraft_state_array(2,:), col{1}, LineWidth=lwidth); hold on;
@@ -64,34 +65,35 @@ exportgraphics(gcf,"./Figures/Fig " + fig(1) + "_Inertial Position vs Time.pdf")
 
 %% Plotting Euler Angles vs. Time
 
+aircraft_state_array(4:6,:) = rad2deg(aircraft_state_array(4:6,:));
 figure(fig(2));
 t2 = findobj(gcf, 'Type', 'tiledlayout');
 if isempty(t2)
     t2 = tiledlayout(3,1,'TileSpacing','compact');
     xlabel(t2, "time (s)");
-    if (length(col) > 1)
-        sgtitle(col{2} + "Euler Angles vs. Time","FontSize",10)
-    else
-        sgtitle("Euler Angles vs. Time","FontSize",10)
-    end
 end
 
 nexttile(t2, 1);
 plot(time, aircraft_state_array(4,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\phi (rad)");
+ylabel("\phi (deg)");
 adjustYlim(aircraft_state_array(4,:),col);
+if (length(col) > 1)
+        title(col{2} + "Euler Angles vs. Time")
+    else
+        title("Euler Angles vs. Time")
+end
 
 nexttile(t2, 2);
 plot(time, aircraft_state_array(5,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\theta (rad)");
+ylabel("\theta (deg)");
 adjustYlim(aircraft_state_array(5,:),col);
 
 nexttile(t2, 3);
 h = plot(time, aircraft_state_array(6,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("\psi (rad)");
+ylabel("\psi (deg)");
 adjustYlim(aircraft_state_array(6,:),col);
 
 addLegend(h,col,1);
@@ -104,11 +106,6 @@ t3 = findobj(gcf, 'Type', 'tiledlayout');
 if isempty(t3)
     t3 = tiledlayout(3,1,'TileSpacing','compact');
     xlabel(t3, "time (s)");
-    if (length(col) > 1)
-        sgtitle(col{2} + "Body Frame Velocity vs. Time","FontSize",10)
-    else
-        sgtitle("Body Frame Velocity vs. Time","FontSize",10)
-    end
 end
 
 nexttile(t3, 1);
@@ -116,6 +113,11 @@ plot(time, aircraft_state_array(7,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
 ylabel("u^E (m/s)");
 adjustYlim(aircraft_state_array(7,:),col);
+if (length(col) > 1)
+    title(col{2} + "Body Frame Velocity vs. Time")
+else
+    title("Body Frame Velocity vs. Time")
+end
 
 nexttile(t3, 2);
 plot(time, aircraft_state_array(8,:), col{1}, LineWidth=lwidth); hold on;
@@ -135,34 +137,36 @@ exportgraphics(gcf,"./Figures/Fig " + fig(3) + "_Body Velocity vs Time.pdf");
 
 %% Plotting Angular Velocity vs. Time
 
+aircraft_state_array(10:12,:) = rad2deg(aircraft_state_array(10:12,:));
 figure(fig(4));
 t4 = findobj(gcf, 'Type', 'tiledlayout');
 if isempty(t4)
     t4 = tiledlayout(3,1,'TileSpacing','compact');
     xlabel(t4, "time (s)");
-    if (length(col) > 1)
-        sgtitle(col{2} + "Angular Velocity vs. Time","FontSize",10)
-    else
-        sgtitle("Angular Velocity vs. Time","FontSize",10)
-    end
 end
 
 nexttile(t4, 1);
 plot(time, aircraft_state_array(10,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("p (rad/s)");
+ylabel("p (deg/s)");
 adjustYlim(aircraft_state_array(10,:),col);
+if (length(col) > 1)
+    title(col{2} + "Angular Velocity vs. Time")
+else
+    title("Angular Velocity vs. Time")
+end
+
 
 nexttile(t4, 2);
 plot(time, aircraft_state_array(11,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("q (rad/s)");
+ylabel("q (deg/s)");
 adjustYlim(aircraft_state_array(11,:),col);
 
 nexttile(t4, 3);
 h = plot(time, aircraft_state_array(12,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
-ylabel("r (rad/s)");
+ylabel("r (deg/s)");
 adjustYlim(aircraft_state_array(12,:),col);
 
 addLegend(h,col,1);
@@ -175,11 +179,6 @@ t5 = findobj(gcf, 'Type', 'tiledlayout');
 if isempty(t5)
     t5 = tiledlayout(4,1,'TileSpacing','compact');
     xlabel(t5, "time (s)");
-    if (length(col) > 1)
-        sgtitle(col{2} + "Control Inputs vs. Time","FontSize",10);
-    else
-        sgtitle("Control Inputs vs. Time","FontSize",10);
-    end
 end
 
 nexttile(t5, 1);
@@ -187,6 +186,12 @@ plot(time, control_input_array(1,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
 ylabel("\delta_e (°)");
 adjustYlim(control_input_array(1,:),col);
+if (length(col) > 1)
+    title(col{2} + "Control Inputs vs. Time");
+else
+    title("Control Inputs vs. Time");
+end
+
 
 nexttile(t5, 2);
 plot(time, control_input_array(2,:), col{1}, LineWidth=lwidth); hold on;
@@ -219,9 +224,9 @@ scatter3(aircraft_state_array(1,end),aircraft_state_array(2,end),aircraft_state_
 h = plot3(aircraft_state_array(1,:),aircraft_state_array(2,:),aircraft_state_array(3,:),col{1},LineWidth=lwidth);
 addLegend(h,col,2);
 if (length(col) > 1)
-    title(col{2} + "Quadrotor 3D Path","FontSize",10);
+    title(col{2} + "Quadrotor 3D Path");
 else
-    title("Quadrotor 3D Path","FontSize",10);
+    title("Quadrotor 3D Path");
 end
 xlabel("x_E");
 ylabel("y_E");
@@ -267,12 +272,12 @@ function adjustYlim(var,col)
         end
     end
 
-    if (newMax < 0.5) && (newMin > -0.5)
-        targetMin = -1;
-        targetMax = 1;
+    if (newMax < 1) && (newMin > -1)
+        targetMin = -0.5;
+        targetMax = 0.5;
     else
-        targetMin = newMin - 1;
-        targetMax = newMax + 1;
+        targetMin = newMin - 0.25;
+        targetMax = newMax + 0.25;
     end
     
     if isequal(curLim, [0 1])
