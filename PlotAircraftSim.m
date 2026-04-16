@@ -235,7 +235,7 @@ set(gca, 'ZDir', 'reverse')
 adjustXlim(aircraft_state_array(1,:));
 adjustYlim(aircraft_state_array(2,:),col);
 adjustZlim(aircraft_state_array(3,:));
-view(30,30);
+view(-37.5,30);
 exportgraphics(gcf,"./Figures/Fig " + fig(6) + "_Quadrotor 3D Path.pdf");
 function adjustXlim(var)
     curLim = xlim;
