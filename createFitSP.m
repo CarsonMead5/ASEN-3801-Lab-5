@@ -1,4 +1,4 @@
-function [fitresult, gof] = createFitSP(tout, theta)
+function [fitresult, gof] = createFitSP(tout, theta, excludedPoints)
 %CREATEFIT(TOUT,THETA)
 %  Create a fit.
 %
@@ -19,7 +19,7 @@ function [fitresult, gof] = createFitSP(tout, theta)
 
 % Set up fittype and options.
 ft = fittype( 'exp(s*x)*(a*cos(d*x)+b*cos(-d*x))+c', 'independent', 'x', 'dependent', 'y' );
-excludedPoints = xData < 0.3 | xData>2;
+% excludedPoints = xData<0.3 | xData>2;
 opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
 opts.Display = 'Off';
 opts.Lower = [-Inf -Inf -Inf -10 -5];
@@ -33,11 +33,11 @@ opts.Exclude = excludedPoints;
 % Plot fit with data.
 figure( 'Name', 'untitled fit 2' );
 h = plot( fitresult, xData, yData, excludedPoints );
-legend( h, 'theta vs. tout', 'Excluded theta vs. tout', 'untitled fit 2', 'Location', 'NorthEast', 'Interpreter', 'none' );
+legend( h, 'Data', 'Excluded Points', sprintf("Fit ($R^2 = %.4f$)",gof.rsquare), 'Location', 'southeast', 'Interpreter', 'latex' );
 % Label axes
-xlabel( 'tout', 'Interpreter', 'none' );
-ylabel( 'theta', 'Interpreter', 'none' );
+xlabel( 'Time (s)', 'Interpreter', 'none' );
+ylabel( '$\theta$ (rad)', 'Interpreter', 'latex' );
 grid on;
-ylim([-1 0.2]);
+ylim([-0.8 0.2]);
 
 

@@ -1,4 +1,4 @@
-function [fitresult, gof] = createFitPhugoid(tout, u)
+function [fitresult, gof] = createFitPhugoid(tout, u, excludedPoints)
 %CREATEFIT(TOUT,U)
 %  Create a fit.
 %
@@ -19,7 +19,7 @@ function [fitresult, gof] = createFitPhugoid(tout, u)
 
 % Set up fittype and options.
 ft = fittype( 'exp(s*x)*(a*cos(d*x)+b*cos(-d*x))+c', 'independent', 'x', 'dependent', 'y' );
-excludedPoints = xData < 0.56;
+% excludedPoints = xData < 0.56;
 opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
 opts.Display = 'Off';
 opts.StartPoint = [0 0 0 0.659 -0.039];
@@ -31,8 +31,8 @@ opts.Exclude = excludedPoints;
 % Plot fit with data.
 figure( 'Name', 'untitled fit 1' );
 h = plot( fitresult, xData, yData, excludedPoints );
-legend( h, 'u vs. tout', 'Excluded u vs. tout', 'untitled fit 1', 'Location', 'NorthEast', 'Interpreter', 'none' );
+legend( h, 'Data', 'Excluded Points', sprintf("Fit ($R^2 = %.4f$)",gof.rsquare), 'Location', 'southeast', 'Interpreter', 'latex' );
 % Label axes
-xlabel( 'tout', 'Interpreter', 'none' );
-ylabel( 'u', 'Interpreter', 'none' );
+xlabel( 'Time (s)', 'Interpreter', 'none' );
+ylabel( 'u (m/s)' );
 grid on
