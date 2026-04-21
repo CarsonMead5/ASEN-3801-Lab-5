@@ -6,7 +6,7 @@ function [vardot] = AircraftEOM(t, aircraft_state, aircraft_surfaces, wind_inert
     vB = aircraft_state(7:9);
     omegaB = aircraft_state(10:12);
     
-    [~, ~, ~, density] = atmosisa(-pE(3));
+    density = stdatmo(-pE(3));
     [aero_forces, aero_moments] = AeroForcesAndMoments(aircraft_state, aircraft_surfaces, wind_inertial, density, aircraft_parameters);
 
     REB = angle2dcm(psi,theta,phi,'ZYX');

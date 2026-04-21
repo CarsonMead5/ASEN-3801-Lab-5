@@ -26,7 +26,7 @@ function [xdot] = AircraftEOMDoublet(time, aircraft_state, aircraft_surfaces, do
         aircraft_surfaces(1) = aircraft_surfaces(1) - doublet_size;
     end
 
-    [~, ~, ~, density] = atmosisa(-pE(3));
+    density = stdatmo(-pE(3));
     [aero_forces, aero_moments] = AeroForcesAndMoments(aircraft_state, aircraft_surfaces, wind_inertial, density, aircraft_parameters);
 
     REB = angle2dcm(psi,theta,phi,'ZYX');
