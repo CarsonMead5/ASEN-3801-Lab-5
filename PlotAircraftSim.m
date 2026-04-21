@@ -39,6 +39,7 @@ nexttile(t1, 1);
 
 plot(time, aircraft_state_array(1,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("x_E (m)");
 adjustYlim(aircraft_state_array(1,:),col);
 if (length(col) > 1) 
@@ -50,12 +51,14 @@ end
 nexttile(t1, 2);
 plot(time, aircraft_state_array(2,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("y_E (m)");
 adjustYlim(aircraft_state_array(2,:),col);
 
 nexttile(t1, 3);
 h = plot(time, aircraft_state_array(3,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("z_E (m)");
 set(gca,'YDir','reverse');
 adjustYlim(aircraft_state_array(3,:),col);
@@ -76,6 +79,7 @@ end
 nexttile(t2, 1);
 plot(time, aircraft_state_array(4,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("\phi (deg)");
 adjustYlim(aircraft_state_array(4,:),col);
 if (length(col) > 1)
@@ -87,12 +91,14 @@ end
 nexttile(t2, 2);
 plot(time, aircraft_state_array(5,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("\theta (deg)");
 adjustYlim(aircraft_state_array(5,:),col);
 
 nexttile(t2, 3);
 h = plot(time, aircraft_state_array(6,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("\psi (deg)");
 adjustYlim(aircraft_state_array(6,:),col);
 
@@ -111,6 +117,7 @@ end
 nexttile(t3, 1);
 plot(time, aircraft_state_array(7,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("u^E (m/s)");
 adjustYlim(aircraft_state_array(7,:),col);
 if (length(col) > 1)
@@ -122,12 +129,14 @@ end
 nexttile(t3, 2);
 plot(time, aircraft_state_array(8,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("v^E (m/s)");
 adjustYlim(aircraft_state_array(8,:),col);
 
 nexttile(t3, 3);
 h = plot(time, aircraft_state_array(9,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("w^E (m/s)");
 set(gca,'YDir','reverse');
 adjustYlim(aircraft_state_array(10,:),col);
@@ -148,6 +157,7 @@ end
 nexttile(t4, 1);
 plot(time, aircraft_state_array(10,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("p (deg/s)");
 adjustYlim(aircraft_state_array(10,:),col);
 if (length(col) > 1)
@@ -160,12 +170,14 @@ end
 nexttile(t4, 2);
 plot(time, aircraft_state_array(11,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("q (deg/s)");
 adjustYlim(aircraft_state_array(11,:),col);
 
 nexttile(t4, 3);
 h = plot(time, aircraft_state_array(12,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("r (deg/s)");
 adjustYlim(aircraft_state_array(12,:),col);
 
@@ -182,8 +194,9 @@ if isempty(t5)
 end
 
 nexttile(t5, 1);
-plot(time, control_input_array(1,:), col{1}, LineWidth=lwidth); hold on;
+plot(time, rad2deg(control_input_array(1,:)), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("\delta_e (°)");
 adjustYlim(control_input_array(1,:),col);
 if (length(col) > 1)
@@ -194,20 +207,23 @@ end
 
 
 nexttile(t5, 2);
-plot(time, control_input_array(2,:), col{1}, LineWidth=lwidth); hold on;
+plot(time, rad2deg(control_input_array(2,:)), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("\delta_a (°)");
 adjustYlim(control_input_array(2,:),col);
 
 nexttile(t5, 3);
-plot(time, control_input_array(3,:), col{1}, LineWidth=lwidth); hold on;
+plot(time, rad2deg(control_input_array(3,:)), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("\delta_r (°)");
 adjustYlim(control_input_array(3,:),col);
 
 nexttile(t5, 4);
 h = plot(time, control_input_array(4,:), col{1}, LineWidth=lwidth); hold on;
 grid on;
+grid minor;
 ylabel("\delta_t (n.d.)")
 ylim([0,1]);
 
@@ -219,14 +235,15 @@ exportgraphics(gcf,"./Figures/Fig " + fig(5) + "_Control Surface Inputs vs Time.
 figure(fig(6));
 hold on;
 grid on;
+grid minor;
 scatter3(aircraft_state_array(1,1),aircraft_state_array(2,1),aircraft_state_array(3,1),markSize,'green','filled','o','HandleVisibility', 'off');
 scatter3(aircraft_state_array(1,end),aircraft_state_array(2,end),aircraft_state_array(3,end),markSize,'red','o','HandleVisibility','off',LineWidth=2);
 h = plot3(aircraft_state_array(1,:),aircraft_state_array(2,:),aircraft_state_array(3,:),col{1},LineWidth=lwidth);
 addLegend(h,col,2);
 if (length(col) > 1)
-    title(col{2} + "Quadrotor 3D Path");
+    title(col{2} + "Aircraft 3D Path");
 else
-    title("Quadrotor 3D Path");
+    title("Aircraft 3D Path");
 end
 xlabel("x_E");
 ylabel("y_E");
@@ -236,7 +253,7 @@ adjustXlim(aircraft_state_array(1,:));
 adjustYlim(aircraft_state_array(2,:),col);
 adjustZlim(aircraft_state_array(3,:));
 view(-37.5,30);
-exportgraphics(gcf,"./Figures/Fig " + fig(6) + "_Quadrotor 3D Path.pdf");
+exportgraphics(gcf,"./Figures/Fig " + fig(6) + "_Aircraft 3D Path.pdf");
 function adjustXlim(var)
     curLim = xlim;
     newMin = min(var);

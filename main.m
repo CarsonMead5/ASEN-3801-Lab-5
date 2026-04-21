@@ -12,7 +12,7 @@ u0 = [0; 0; 0; 0];
 wE = [0; 0; 0];
 
 options = odeset('RelTol',1e-6);
-[tout, xout] = ode45(@(t,x) AircraftEOM(t,x,u0,wE,aircraft_parameters), [0 50], x0 ,options); % Run ODE45
+[tout, xout] = ode45(@(t,x) AircraftEOM(t,x,u0,wE,aircraft_parameters), [0 100], x0 ,options); % Run ODE45
 uout = repmat(u0,1,length(tout));
 
 fig = 211:216;
@@ -59,7 +59,7 @@ uout = repmat(u0,1,length(tout));
 
 fig = 231:236;
 col = {"b-","","2.3",1};
-PlotAircraftSim(tout, xout', uout, fig, col);
+% PlotAircraftSim(tout, xout', uout, fig, col);
 
 %% 3.1
 clear; clc; close all;
@@ -133,7 +133,7 @@ doublet_size = deg2rad(15);
 doublet_time = 0.25;
 
 options = odeset('RelTol',1e-6);
-[tout, xout] = ode45(@(t,x) AircraftEOMDoublet(t,x,u0,doublet_size,doublet_time,wE,aircraft_parameters), [0 3], x0 ,options); % Run ODE45
+[tout, xout] = ode45(@(t,x) AircraftEOMDoublet(t,x,u0,doublet_size,doublet_time,wE,aircraft_parameters), [0 6], x0 ,options); % Run ODE45
 uout = repmat(u0,1,length(tout));
 
 beforeD = tout>0 & tout<doublet_time;
@@ -146,6 +146,7 @@ col = {"b-","","3.1",1};
 PlotAircraftSim(tout, xout', uout, fig, col);
 
 %%
+
 theta = rad2deg(xout(:,5));
 theta = theta-theta(end);
 minmax = islocalmin(theta) | islocalmax(theta);
