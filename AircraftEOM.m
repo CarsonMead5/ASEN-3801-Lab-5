@@ -21,7 +21,7 @@ function [vardot] = AircraftEOM(t, aircraft_state, aircraft_surfaces, wind_inert
     FB = aero_forces+FgB;
     vBdot = FB/aircraft_parameters.m - cross(omegaB,vB);
 
-    omegaBdot = aircraft_parameters.IB^-1*(aero_moments - cross(omegaB,aircraft_parameters.IB*omegaB));
+    omegaBdot = aircraft_parameters.IB\(aero_moments - cross(omegaB,aircraft_parameters.IB*omegaB));
 
     vardot = [pEdot; odot; vBdot; omegaBdot];
 end
